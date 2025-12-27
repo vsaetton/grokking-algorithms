@@ -8,6 +8,7 @@ public class ListSelectionSort {
     public static void main(String[] args) {
         List<Integer> data = new ArrayList<>(Arrays.asList(64, 25, 12, 22, 11));
 
+        System.out.println("Before sorting: " + data);
         System.out.println("Sorted List: " + selectionSort(data));
     }
 
@@ -15,17 +16,22 @@ public class ListSelectionSort {
         List<Integer> sortedList = new ArrayList<>();
 
         while (!input.isEmpty()) {
-            int minIndex = 0;
-
-            for (int i = 1; i < input.size(); i++) {
-                if (input.get(i) < input.get(minIndex)) {
-                    minIndex = i;
-                }
-            }
-
+            int minIndex = findMinIndex(input);
             sortedList.add(input.remove(minIndex));
         }
 
         return sortedList;
+    }
+
+    private static int findMinIndex(List<Integer> input) {
+        int minIndex = 0;
+
+        for (int i = 1; i < input.size(); i++) {
+            if (input.get(i) < input.get(minIndex)) {
+                minIndex = i;
+            }
+        }
+
+        return minIndex;
     }
 }
