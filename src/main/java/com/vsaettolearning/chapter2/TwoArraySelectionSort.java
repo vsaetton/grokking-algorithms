@@ -12,12 +12,12 @@ public class TwoArraySelectionSort {
     }
 
     public static int[] selectionSort(int[] original) {
-        int n = original.length;
-        int[] sorted = new int[n];
+        int length = original.length;
+        int[] sorted = new int[length];
 
-        int[] tempArr = Arrays.copyOf(original, n);
+        int[] tempArr = Arrays.copyOf(original, length);
 
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < length; i++) {
             int minIdx = findMinIndex(tempArr);
             sorted[i] = tempArr[minIdx];
             tempArr[minIdx] = Integer.MAX_VALUE;
