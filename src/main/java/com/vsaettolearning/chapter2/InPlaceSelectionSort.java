@@ -2,7 +2,7 @@ package com.vsaettolearning.chapter2;
 
 import java.util.Arrays;
 
-public class SelectionSort {
+public class InPlaceSelectionSort {
     public static void main(String[] args) {
         int[] arr = {64, 25, 12, 22, 11};
         System.out.println("Original Array: " + Arrays.toString(arr));
