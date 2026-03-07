@@ -18,6 +18,7 @@ This is a personal study resource, not an official companion to the book. If you
 - Chapter 3 - Recursion (/Users/vsaetto/IdeaProjects/algorithms/src/main/java/com/vsaettolearning/chapter3/Q&E.md)
 - Chapter 4 Quicksort (/Users/vsaetto/IdeaProjects/algorithms/src/main/java/com/vsaettolearning/chapter4/Q&E.md)
 - Chapter 5 - Hash tables (/Users/vsaetto/IdeaProjects/algorithms/src/main/java/com/vsaettolearning/chapter5/Q&E.md)
+- Chapter 6 - Breadth-first Search (/Users/vsaetto/IdeaProjects/algorithms/src/main/java/com/vsaettolearning/chapter6/Q&E.md)
 <!-- CHAPTERS_END -->
 
 
