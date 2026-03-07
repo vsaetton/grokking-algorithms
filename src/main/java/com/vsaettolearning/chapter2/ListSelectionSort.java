@@ -25,9 +25,12 @@ public class ListSelectionSort {
 
     private static int findMinIndex(List<Integer> input) {
         int minIndex = 0;
+        int min = input.get(0);
 
         for (int i = 1; i < input.size(); i++) {
-            if (input.get(i) < input.get(minIndex)) {
+            int current = input.get(i);
+            if (current < min) {
+                min = current;
                 minIndex = i;
             }
         }
