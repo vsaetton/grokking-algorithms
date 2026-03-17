@@ -14,7 +14,7 @@ What information can you give me, just based on this call stack?
 *Answer*: Here are some things you could tell me:
 
 * The `greet` function is called first, with `name = maggie`.
-* Then the `greet` function calls the g`reet2` function, with `name = maggie`.
+* Then the `greet` function calls the `greet2` function, with `name = maggie`.
 * At this point, the `greet` function is in an incomplete, suspended state.
 * The current function call is the `greet2` function.
 * After this function call completes, the `greet` function will resume.
