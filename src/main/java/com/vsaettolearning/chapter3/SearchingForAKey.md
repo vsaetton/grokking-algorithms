@@ -77,4 +77,3 @@ In your `look_for_key` example, the recursion stops when:
 > **Warning:** Without a proper base case (or if the base case is unreachable, like searching for a factorial of a
 > negative number using `x == 2`), the program will continue adding layers to the stack until it crashes with a
 **StackOverflowError**.
-
