@@ -1,86 +1,82 @@
 # Summary: Chapter 4 - Quicksort
 
-Chapter 4 introduces **Divide and Conquer (D&C)**, a powerful recursive strategy for problem-solving, and applies it to
-create **Quicksort**, one of the most efficient sorting algorithms.
+This chapter introduces **Divide and Conquer (D&C)**, a recursive strategy for solving problems. It then applies D&C to
+create **Quicksort**, one of the fastest and most widely used sorting algorithms.
 
-## 1. Divide & Conquer (D&C)
+---
 
-D&C is a recursive technique used to break a problem down into smaller and smaller pieces until you reach a version of
-the problem that is easy to solve.
+## 1. Divide and Conquer (D&C)
 
-### The Two Steps of D&C:
+D&C is a recursive mindset. To solve a problem using D&C, you follow two steps:
 
-1. **Identify the Base Case:** This is the simplest possible case (e.g., an empty array).
-2. **The Recursive Step:** Divide or "decrease" your problem until it becomes the base case.
+1. **Figure out the base case:** This should be the simplest possible case (e.g., an empty array).
+2. **Divide or decrease your problem:** Shrink your problem until it becomes the base case.
 
 ### Example: Summing an Array
 
-Instead of using a loop to sum `[2, 4, 6]`, you can use D&C:
+If you want to sum `[2, 4, 6]`:
 
-* **Base Case:** If the list is empty, the sum is 0.
-* **Recursive Step:** The sum of `[2, 4, 6]` is `2 + sum([4, 6])`.
+* **Recursive Step:** `2 + sum([4, 6])`
+* **Next Step:** `2 + (4 + sum([6]))`
+* **Base Case:** `sum([6])` is just `6`.
+* **Total:** `2 + 4 + 6 = 12`.
 
-**Python Code for Recursive Sum:**
-
-```python
-def sum(list):
-    if list == []:
-        return 0
-    return list[0] + sum(list[1:])
-```
+---
 
 ## 2. Quicksort
 
-Quicksort is much faster than Selection Sort because it uses D&C to sort an array.
+Quicksort is much faster than Selection Sort. It uses the D&C strategy to sort an array.
 
-### How the Algorithm Works:
+### The Algorithm:
 
-1. **Pick a Pivot:** Choose an element from the array (e.g., the first element).
-2. **Partitioning:** Create two sub-arrays: one containing all elements smaller than the pivot, and one containing all
-   elements larger than the pivot.
-3. **Recursion:** Call quicksort on both sub-arrays.
+1. **Base Case:** If the array has 0 or 1 element, it is already sorted. Return it.
+2. **Pick a Pivot:** Choose an element from the array (e.g., the first element).
+3. **Partitioning:** Create two sub-arrays: one for elements **smaller** than the pivot and one for elements **larger**
+   than the pivot.
+4. **Recurse:** Call Quicksort on both sub-arrays and combine them.
 
-**The Base Case:** An array with 0 or 1 element is already sorted.
-
-**Python Code for Quicksort:**
+### Python Implementation
 
 ```python
 def quicksort(array):
     if len(array) < 2:
-        return array  # Base case: arrays with 0 or 1 element are already sorted
+        return array  # Base case
     else:
         pivot = array[0] # Recursive case
         less = [i for i in array[1:] if i <= pivot]
         greater = [i for i in array[1:] if i > pivot]
+        
         return quicksort(less) + [pivot] + quicksort(greater)
 
 print(quicksort([10, 5, 2, 3])) # Output: [2, 3, 5, 10]
 ```
 
-## 3. Big O Notation: Average vs. Worst Case
+## 3. Big O Notation: Worst Case vs. Best Case
 
-Quicksort is unique because its performance depends heavily on the **pivot** you choose.
+The performance of Quicksort depends entirely on the **pivot** you choose.
 
-* **Worst Case ($O(n^2)$):** This happens if you always pick the first element as the pivot and the array is already
-  sorted. In this scenario, the stack height is $n$, meaning you aren't really dividing the problem in half; you're just
-  shaving off one element at a time.
-* **Average Case ($O(n \log n)$):** If you pick a middle element or a random pivot, the stack height is $\log n$. You
-  are dividing the array into two roughly equal halves at each step.
+* **Worst Case (O(n²)):** This happens if you always pick the smallest (or largest) element as the pivot (e.g., trying
+  to sort an already sorted array without picking a random pivot). The stack is very tall ($n$ levels).
+* **Best Case (O(n log n)):** This happens if you pick the middle element as the pivot. The stack is short ($\log n$
+  levels).
+* **Average Case (O(n log n)):** If you pick a **random** element as the pivot, Quicksort hits this average case almost
+  every time.
 
-### Quicksort vs. Merge Sort
+---
 
-Both algorithms have an average run time of $O(n \log n)$. However, Quicksort is often faster in practice because it has
-a smaller **constant**.
+## 4. Quicksort vs. Merge Sort
 
-* **The Constant:** In Big O notation ($c \times n$), the '$c$' is a fixed amount of time that an algorithm takes.
-  Usually, we ignore it, but when two algorithms have the same Big O run time (like Quicksort and Merge Sort), the one
-  with the smaller constant wins. Quicksort's constant is smaller than Merge Sort's, making it faster for most
-  real-world data.
+Merge Sort is also $O(n \log n)$, but Quicksort is often faster in practice.
+
+* **Constants:** In Big O notation ($c \cdot n \log n$), Quicksort has a smaller constant ($c$) than Merge Sort, meaning
+  it performs fewer actual operations per step.
+* **Memory:** Modern implementations of Quicksort are very memory efficient and can often sort "in-place."
+
+---
 
 ## Key Takeaways
 
-* **Divide and Conquer (D&C)** works by breaking a problem down into smaller sub-problems.
-* The **base case** for recursive functions on arrays is usually an empty array or an array with one element.
-* **Quicksort** is $O(n \log n)$ on average but $O(n^2)$ in the worst case.
-* **Pivot selection** is the most important factor in Quicksort's efficiency. Choosing a random element as the pivot
-  usually results in the average case run time.
+* **Divide and Conquer** works by breaking a problem down into smaller versions of itself.
+* The **Base Case** for sorting is an empty array or an array with one element.
+* **Quicksort’s performance** depends on the pivot. A random pivot usually results in $O(n \log n)$ time.
+* **Constants** in Big O notation matter when comparing two algorithms with the same Big O run time.
