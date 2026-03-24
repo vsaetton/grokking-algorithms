@@ -45,5 +45,4 @@ public class BreadthFirstSearch {
     private static boolean isPersonSeller(String person) {
         return person.endsWith("m");
     }
-
 }
