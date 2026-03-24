@@ -1,50 +1,55 @@
 # Summary: Chapter 6 - Breadth-First Search
 
-**Breadth-First Search (BFS)** is an algorithm used to find the **shortest path** between two nodes in a graph. In an
-unweighted graph, "shortest" doesn't mean physical distance; it means the path with the **minimum number of edges**.
+[cite_start]**Breadth-First Search (BFS)** is the algorithm used to solve **shortest-path problems
+**[cite: 138, 141]. [cite_start]In an unweighted graph, it finds the path with the **minimum number of segments** or
+edges[cite: 123, 137, 414].
 
 ---
 
-## 1. Graphs: Nodes and Edges
+## 1. Graphs: Modeling Connections
 
-A graph models a set of connections. It is made up of:
+[cite_start]A graph is an abstract data structure used to model a network of connections[cite: 118, 153].
 
-* **Nodes (Vertices):** The entities in the graph (e.g., people, cities, tasks).
-* **Edges:** The lines connecting nodes, representing the relationship.
-* **Neighbors:** Any node directly connected to another node.
-
-### Graph Types
-
-* **Directed Graph:** Relationships go one way (e.g., Alice follows Bob on Twitter).
-* **Undirected Graph:** Relationships are mutual (e.g., Alice and Bob are friends).
-* **DAG (Directed Acyclic Graph):** A directed graph with **no cycles**. This is required for Topological Sorting.
+* [cite_start]**Nodes and Edges:** Every graph is composed of **nodes** (the entities) and **edges** (the connections
+  between them)[cite: 148, 149].
+* **Neighbors:** Nodes directly connected to another node. [cite_start]In directed graphs, these are specifically *
+  *in-neighbors** (pointing to the node) or **out-neighbors** (the node points to them)[cite: 150].
+* **Graph Types:**
+    * [cite_start]**Directed:** Relationships have a direction (e.g., Alex owes Rama money)[cite: 120, 146].
+    * [cite_start]**Undirected:** Relationships are mutual; the edge has no arrow, effectively meaning nodes are each
+      other's neighbors.
+    * [cite_start]**DAG (Directed Acyclic Graph):** A directed graph with **no cycles**.
 
 ---
 
 ## 2. Two Questions BFS Answers
 
-BFS is the primary tool for solving "shortest path" problems in unweighted networks:
+[cite_start]BFS provides two distinct pieces of information about a network[cite: 156]:
 
-1. **Is there a path?** (e.g., "Is there a mango seller in my network?")
-2. **What is the shortest path?** (e.g., "Who is the *closest* mango seller?")
+1. [cite_start]**Existence:** Is there a path from node A to node B? [cite: 156, 172]
+2. [cite_start]**Shortest Path:** What is the path with the fewest steps between them? [cite: 157, 173]
+
+[cite_start]**Real-world examples:** Writing a spellchecker (fewest edits), finding the closest doctor in a network, or
+building a search engine crawler[cite: 124, 125, 126].
 
 ---
 
 ## 3. Data Structure: The Queue
 
-To implement BFS, you must use a **Queue**.
+[cite_start]The BFS algorithm relies on a **Queue** to ensure it radiates outward correctly from the starting
+point[cite: 179, 192].
 
-* **FIFO (First-In, First-Out):** Like a line at a store. The first person in is the first person out.
-* **Role in BFS:** You add neighbors to the back of the queue. This ensures you exhaust all 1st-degree neighbors before
-  moving to 2nd-degree neighbors.
+* [cite_start]**FIFO (First-In, First-Out):** Elements are searched in the exact order they are added[cite: 191, 199].
+* [cite_start]**Order Matters:** By searching 1st-degree neighbors before 2nd-degree neighbors, BFS guarantees that the
+  first "target" found is the closest one[cite: 184, 185]. [cite_start]If you used a Stack (LIFO), you might find a
+  path, but it wouldn't be the shortest[cite: 321, 325].
 
 ---
 
-## 4. Code Example: The Mango Seller
+## 4. Code Implementation: The Mango Seller
 
-This algorithm searches your network for a "mango seller" (defined as someone whose name ends with the letter 'm').
-
-### Python Implementation
+[cite_start]To search for a "mango seller" (someone whose name ends in 'm'), we use a queue and a set to track
+progress[cite: 161].
 
 ```python
 from collections import deque
@@ -53,60 +58,57 @@ def person_is_seller(name):
     return name[-1] == 'm'
 
 def search(name, graph):
-    search_queue = deque()      # Initialize the queue
-    search_queue += graph[name] # Add your neighbors
-    searched = set()            # Keep track of who you've checked
+    search_queue = deque()      # Creates a new queue
+    search_queue += graph[name] # Adds all your neighbors to the queue
+    searched = set()            # Tracks people already checked to avoid infinite loops
 
     while search_queue:
-        person = search_queue.popleft() # Grab the first person (FIFO)
-        if person not in searched:      # Avoid infinite loops
+        person = search_queue.popleft() # Grabs the first person off the queue
+        if person not in searched:
             if person_is_seller(person):
                 print(f"{person} is a mango seller!")
                 return True
             else:
-                search_queue += graph[person] # Add their friends
-                searched.add(person)          # Mark as searched
+                search_queue += graph[person] # Adds this person's friends to the queue
+                searched.add(person)          # Marks person as searched
     return False
 ```
 
-## 5. Visualizing Trees vs. Graphs (Exercise 6.5)
+## 5. Trees vs. Graphs
 
-A **Tree** is a special type of graph where nodes only branch out and never create a cycle (nothing points back "up" or
-connects back to a previous branch).
+A **Tree** is a specific type of graph.
 
-```text
-    (A) CYCLE (Not a Tree)      (B) HIERARCHY (Tree)      (C) MULTI-PATH (Not a Tree)
-       (1) --> (2)                  (1)                      (1)
-        ^       |                  /   \                    /   \
-        |       v                (2)   (3)                (2)--> (3)
-       (3) <----                  |
-                                 (4)
-```
+* **The Rule:** A tree is a graph that **never has cycles**; it only branches out.
+* **Navigation:** In a tree, there is exactly one unique path from the root to any other node. If you can get back to a
+  node using a different path, or if a node points back to an ancestor, it is a graph but not a tree.
+
+---
 
 ## 6. Topological Sort
 
-If a graph has dependencies (Task A must happen before Task B), you use a **Topological Sort** to find the correct order
-of operations.
+When nodes have dependencies (Task A must happen before Task B), a **Topological Sort** identifies the necessary order
+of tasks.
 
-* **Logic:** It provides a linear list of steps that respects all arrows in the graph.
-* **Constraint:** This only works on a **DAG** (Directed Acyclic Graph). If there is a cycle (e.g., Task A depends on B,
-  and B depends on A), a topological sort is impossible.
+* **Linear Ordering:** It produces a list where every dependent node comes after the node it depends on.
+* **Requirement:** This only works on **DAGs** (Directed Acyclic Graph). If a graph has a cycle (e.g., Task A depends on
+  B, and B depends on A), there is no "first" task, making a topological sort impossible.
 
 ---
 
 ## 7. Performance (Big O)
 
-The complexity of Breadth-First Search is:
-$$O(V + E)$$
+The running time for Breadth-First Search is expressed as:
+**O(V + E)**
 
 * **V (Vertices):** You add every node to the queue at most once.
-* **E (Edges):** You follow every connection (edge) in the graph exactly once.
+* **E (Edges):** You follow every edge (connection) in the graph exactly once.
+* **Why it matters:** This means the time taken is proportional to the size of the entire network you are searching.
 
 ---
 
 ## Key Takeaways
 
-* **BFS** finds the path with the fewest edges (shortest path).
-* **Queues** are FIFO (First-In, First-Out); **Stacks** (Recursion) are LIFO (Last-In, First-Out).
-* Always use a **"Searched" list** or set to prevent infinite loops in graphs with cycles.
-* A **Tree** is always a graph, but a **Graph** is not always a tree.
+* **Shortest path** in BFS refers to the fewest number of edges (segments), not physical distance or time.
+* Use a **queue** (First-In, First-Out) for BFS; use a **stack** (Last-In, First-Out) for DFS/Recursion.
+* The **"searched" set** is mandatory for any graph that might contain a cycle to prevent infinite loops.
+* **O(V + E)** is the standard complexity for searching a graph.
