@@ -1,79 +1,123 @@
 # Summary: Chapter 5 - Hash Tables
 
-Chapter 5 introduces **Hash Tables**, arguably the most important data structure in a programmer's toolbox. They provide
-a way to map keys to values, allowing for near-instant data retrieval regardless of the size of the dataset.
+This chapter explores **Hash Tables**, a data structure that provides a way to store and retrieve data instantly by
+mapping keys to values.
 
-## 1. The Hash Function
+---
 
-A hash function is the "engine" of a hash table. It takes an input (like a string) and spits out a number.
+## 1. Hash Functions
 
-* **Consistency:** The same input always results in the same output number.
-* **Index Mapping:** It maps different strings to different indexes in an array.
-* **One-Way:** You can't put the number back in to get the original string.
+A hash table is built by combining an **array** with a **hash function**. A hash function "maps strings to numbers" (
+indices in the array).
 
-## 2. Real-World Use Cases
+### Requirements for a Good Hash Function:
 
-Hash tables (known as `dict` in Python, `HashMap` in Java, or `Objects` in JavaScript) are used for:
+* **Consistency:** Putting in the same string must always return the same number.
+* **Unique Mapping:** It should ideally map different words to different numbers.
+* **Boundary Awareness:** The function must only return valid indices within the size of the array.
 
-### A. Lookups
+---
 
-Mapping a person's name to their phone number, or a website name to an IP address (DNS).
+## 2. Use Cases
 
-### B. Preventing Duplicates
+Hash tables are highly versatile and are used for various practical applications.
 
-Using a hash table to track who has already voted in a contest.
+* **Lookups:** Modeling relationships, such as a phone book (mapping names to numbers) or a menu (mapping items to
+  prices).
+* **DNS Resolution:** Translating web addresses into IP addresses.
+* **Preventing Duplicates:** Quickly checking if an item, such as a voter's name, has been processed already.
+* **Caching:** Storing data so that a server doesn't have to repeat a heavy task.
+
+---
+
+## 3. Collisions
+
+A **collision** occurs when two different keys are assigned to the same slot in the hash table array.
+
+* **Handling Collisions:** The most common solution is to start a **linked list** at that slot.
+* **Performance Impact:** If many keys collide in one slot, the linked list grows long, and searching through it becomes
+  slow.
+
+---
+
+## 4. Performance (Big O)
+
+Hash tables are designed for speed, typically offering "constant time" performance for most operations.
+
+| Operation     | Average Case | Worst Case |
+|:--------------|:-------------|:-----------|
+| **Search**    | O(1)         | O(n)       |
+| **Insertion** | O(1)         | O(n)       |
+| **Deletion**  | O(1)         | O(n)       |
+
+* **Average Case:** Known as "constant time." The operation takes the same amount of time regardless of the number of
+  items.
+* **Worst Case:** Happens if the hash function is poor and all items are stored in a single linked list.
+
+---
+
+## 5. Load Factor
+
+The **load factor** helps track how full the hash table is and when it needs maintenance.
+`Load Factor = (Number of items in hash table) / (Total number of slots)`
+
+* **Resizing:** When the load factor gets too high (typically above 0.7), the hash table should be resized to a larger
+  array to keep operations fast and minimize collisions.
+
+---
+
+## 6. Python Implementation Examples
+
+In Python, hash tables are implemented as **dictionaries** (`dict`).
+
+### Basic Usage
+
+```python
+# Create a new hash table (dictionary)
+book = {}
+
+# Adding items (Keys and Values)
+book["apple"] = 0.67
+book["milk"] = 1.49
+book["avocado"] = 1.49
+
+# Looking up a value
+print(book["avocado"]) # Output: 1.49
+```
+
+### Preventing Duplicates (Voting Example)
 
 ```python
 voted = {}
+
 def check_voter(name):
-    if voted.get(name):
-        print("Kick them out!")
+    if name in voted:
+        print("kick them out!")
     else:
         voted[name] = True
-        print("Let them vote!")
+        print("let them vote!")
+
+check_voter("tom")   # let them vote!
+check_voter("mike")  # let them vote!
+check_voter("mike")  # kick them out!
 ```
 
-## 3. Collisions and Performance
+### Using Hash Tables as a Cache
 
-A **collision** occurs when the hash function assigns two different keys to the same slot in the array.
+```python
+cache = {}
 
-### Dealing with Collisions
-
-The most common solution is to start a **linked list** at that slot. If multiple keys land in the same slot, they are
-simply added to the list. However, if a hash function is poor and puts all keys into a single slot, the hash table
-effectively becomes a giant linked list.
-
-### Performance Breakdown
-
-| Operation  | Average Case (Constant Time) | Worst Case (Linear Time) |
-|:-----------|:-----------------------------|:-------------------------|
-| **Search** | $O(1)$                       | $O(n)$                   |
-| **Insert** | $O(1)$                       | $O(n)$                   |
-| **Delete** | $O(1)$                       | $O(n)$                   |
-
-* **Average Case:** The hash function distributes keys evenly. Linked lists at each slot are very short (1 or 2 items),
-  making lookups feel instantaneous.
-* **Worst Case:** Every item is in one slot. To find a specific key, you have to search through all $n$ items in that
-  list.
-
-## 4. Avoiding the Worst Case
-
-To maintain $O(1)$ performance, you need to manage two factors:
-
-### A. Load Factor
-
-The load factor measures how "full" your hash table is:
-$$\text{Load Factor} = \frac{\text{Number of items in hash table}}{\text{Total number of slots}}$$
-If the load factor starts to grow (the book recommends resizing once it hits **0.7**), you must **resize**. This
-involves creating a new, larger array and re-inserting all existing items using the hash function.
-
-### B. A Good Hash Function
-
-A good hash function distributes values evenly across the array. A bad hash function clusters values together, which
-increases the likelihood of collisions and slows down your program.
+def get_page(url):
+    if url in cache:
+        return cache[url] # Returns cached data
+    else:
+        data = get_data_from_server(url)
+        cache[url] = data # Saves data in cache for next time
+        return data
+```
 
 ## Key Takeaways
 
-* Hash tables are built using an **array** and a **hash function**.
-* They are ideal for **modeling relationships**, **filtering duplicates**, and **caching**.
-* To stay fast ($O(1)$), keep the **load factor low** and use a **high-quality hash function**.
+* **Hash tables** provide instant O(1) lookups, making them one of the most useful data structures.
+* They depend on a **hash function** to distribute keys across an **array**.
+* **Collisions** and a high **load factor** are the primary causes of performance slowdowns.
