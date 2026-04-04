@@ -20,6 +20,7 @@ This is a personal study resource, not an official companion to the book. If you
 - Chapter 5 - Hash tables (/Users/vsaetto/IdeaProjects/algorithms/src/main/java/com/vsaettolearning/chapter5/Summary.md)
 - Chapter 6 - Breadth-first Search (/Users/vsaetto/IdeaProjects/algorithms/src/main/java/com/vsaettolearning/chapter6/Summary.md)
 - Chapter 7 - Trees (/Users/vsaetto/IdeaProjects/algorithms/src/main/java/com/vsaettolearning/chapter7/Summary.md)
+- Chapter 8 - Balanced trees (/Users/vsaetto/IdeaProjects/algorithms/src/main/java/com/vsaettolearning/chapter8/Summary.md)
 <!-- CHAPTERS_END -->
 
 
